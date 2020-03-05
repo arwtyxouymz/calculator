@@ -1,7 +1,7 @@
 <template>
   <div>
-    <button @click="pushButton">
-      <span>{{ num }}</span>
+    <button :class="kind" @click="pushButton">
+      <span>{{ value }}</span>
     </button>  
   </div>
 </template>
@@ -9,14 +9,18 @@
 <script>
 export default {
   props: {
-    num: {
+    value: {
       type: String,
       default: "",
+    },
+    kind: {
+      type: String,
+      default: "numeric"
     }
   },
   methods: {
     pushButton () {
-      this.$emit('push-button', this.num)
+      this.$emit('push-button', { kind: this.kind, value: this.value })
     }
   }
 }
@@ -28,14 +32,29 @@ export default {
 }
 
 button {
-  background: #222222;
-  color: white;
-  font-size: 3em;
-  width: 1.8em;
-  height: 1.8em;
-  border-radius: 50%;
+  position: relative;
+  font-size: 2.8em;
+  width: 100%;
+  height: 100%;
   border: none;
   transition: background-color 1.0s;
+}
+
+button.numeric {
+  background-color: #222222;
+  color: white;
+}
+
+button.operator {
+  background-color: orange;
+  color: white;
+  font-size: 3.5em;
+}
+
+button.other {
+  background-color: #A9A9A9;
+  color: black;
+  font-size: 2.3em;
 }
 
 button:hover {
@@ -43,8 +62,20 @@ button:hover {
 }
 
 button:active {
-  background: rgba(255, 255, 255, .4);
   transition: background-color 0.1s;
+}
+
+button.numeric:active {
+  background-color: rgba(255, 255, 255, .4);
+}
+
+button.operator:active {
+  background-color: rgba(255, 255, 255, .9);
+  color: orange;
+}
+
+button.other:active {
+  background-color: white;
 }
 
 span {

@@ -5,29 +5,28 @@
     </header>
     <div class="calculator">
       <div class="result">
-        <p>4,339</p>
+        <p>{{ result }}</p>
       </div>
       <div class="field">
-        <TapButton num="AC"/>
-        <TapButton num="+/-"/>
-        <TapButton num="%"/>
-        <TapButton num="÷"/>
-        <TapButton num="7"/>
-        <TapButton num="8"/>
-        <TapButton num="9"/>
-        <TapButton num="×"/>
-        <TapButton num="4"/>
-        <TapButton num="5"/>
-        <TapButton num="6"/>
-        <TapButton num="-"/>
-        <TapButton num="1"/>
-        <TapButton num="2"/>
-        <TapButton num="3"/>
-        <TapButton num="+"/>
-        <TapButton num="0"/>
-        <TapButton num="0"/>
-        <TapButton num="."/>
-        <TapButton num="="/>
+        <TapButton @push-button="pushButton" value="AC" kind="other"/>
+        <TapButton @push-button="pushButton" value="+/-" kind="other"/>
+        <TapButton @push-button="pushButton" value="%" kind="other"/>
+        <TapButton @push-button="pushButton" value="÷" kind="operator"/>
+        <TapButton @push-button="pushButton" value="7"/>
+        <TapButton @push-button="pushButton" value="8"/>
+        <TapButton @push-button="pushButton" value="9"/>
+        <TapButton @push-button="pushButton" value="×" kind="operator"/>
+        <TapButton @push-button="pushButton" value="4"/>
+        <TapButton @push-button="pushButton" value="5"/>
+        <TapButton @push-button="pushButton" value="6"/>
+        <TapButton @push-button="pushButton" value="-" kind="operator"/>
+        <TapButton @push-button="pushButton" value="1"/>
+        <TapButton @push-button="pushButton" value="2"/>
+        <TapButton @push-button="pushButton" value="3"/>
+        <TapButton @push-button="pushButton" value="+" kind="operator"/>
+        <TapButton class="zero" @push-button="pushButton" value="0"/>
+        <TapButton @push-button="pushButton" value="."/>
+        <TapButton @push-button="pushButton" value="=" kind="operator"/>
       </div>
     </div>
   </div>
@@ -39,9 +38,14 @@ export default {
   components: {
     TapButton
   },
+  data () {
+    return {
+      result: 0,
+    }
+  },
   methods: {
-    pushButton: function (data) {
-      console.log(data)
+    pushButton: function ({ kind, value }) {
+      console.log(kind, value);
     }
   }
 }
@@ -92,9 +96,13 @@ div.field {
   box-sizing: border-box;
   height: 80%;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  /* grid-column-gap: 20px; */
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 10px;
   padding: 10px;
+}
+
+.zero {
+  grid-column: 1 / 3;
 }
 
 @media (min-width: 425px) {
