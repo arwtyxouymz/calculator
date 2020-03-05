@@ -2,6 +2,8 @@
 
 This is a Vue.js implemented version of [this](https://github.com/florinpop17/app-ideas/blob/master/Projects/1-Beginner/Calculator-App.md).
 
+[Here you can my calculator](https://arwtyxoumz-calculator.netlify.com/)
+
 The default version is up ot 8digit, but you can input more numbers because my implemented version is support font scaling.
 
 ## User Stories
@@ -11,8 +13,8 @@ result of the last operation.
 -   [x] User can see an entry pad containing buttons for the digits 0-9, 
 operations - '+', '-', '/', and '=', a 'C' button (for clear), and an 'AC'
 button (for clear all).
--   [x] User can enter numbers as sequences up to 8 digits long by clicking on
-digits in the entry pad. Entry of any digits more than 8 will be ignored.
+-   ~~[] User can enter numbers as sequences up to 8 digits long by clicking on
+digits in the entry pad. Entry of any digits more than 8 will be ignored.~~
 -   [x] User can click on an operation button to display the result of that
 operation on:
     * the result of the preceding operation and the last number entered OR
@@ -23,8 +25,8 @@ operation. If the users last entry was an operation the display will be
 updated to the value that preceded it.
 -   [x] User can click the 'AC' button to clear all internal work areas and
 to set the display to 0.
--   [x] User can see 'ERR' displayed if any operation would exceed the 
-8 digit maximum.
+-   ~~[] User can see 'ERR' displayed if any operation would exceed the 
+8 digit maximum.~~
 
 ## Bonus features
 
