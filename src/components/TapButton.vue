@@ -31,8 +31,8 @@ button {
   background: #222222;
   color: white;
   font-size: 3em;
-  width: 90px;
-  height: 90px;
+  width: 1.8em;
+  height: 1.8em;
   border-radius: 50%;
   border: none;
   transition: background-color 1.0s;
@@ -43,7 +43,7 @@ button:hover {
 }
 
 button:active {
-  background: rgba(34, 34, 34, .4);
+  background: rgba(255, 255, 255, .4);
   transition: background-color 0.1s;
 }
 
