@@ -20,7 +20,7 @@ export default {
   },
   methods: {
     pushButton () {
-      this.$emit('push-button', { kind: this.kind, value: this.value })
+      this.$emit('push-button', { value: this.value })
     }
   }
 }

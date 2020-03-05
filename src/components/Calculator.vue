@@ -4,29 +4,29 @@
       <h1>Vue.js Calculator</h1>
     </header>
     <div class="calculator">
-      <div class="result">
-        <p>{{ result }}</p>
+      <div class="display" ref="boxWrapper">
+        <p :style="fontScale" ref="autoScaleText">{{ display }}</p>
       </div>
       <div class="field">
-        <TapButton @push-button="pushButton" value="AC" kind="other"/>
-        <TapButton @push-button="pushButton" value="+/-" kind="other"/>
-        <TapButton @push-button="pushButton" value="%" kind="other"/>
-        <TapButton @push-button="pushButton" value="÷" kind="operator"/>
-        <TapButton @push-button="pushButton" value="7"/>
-        <TapButton @push-button="pushButton" value="8"/>
-        <TapButton @push-button="pushButton" value="9"/>
-        <TapButton @push-button="pushButton" value="×" kind="operator"/>
-        <TapButton @push-button="pushButton" value="4"/>
-        <TapButton @push-button="pushButton" value="5"/>
-        <TapButton @push-button="pushButton" value="6"/>
-        <TapButton @push-button="pushButton" value="-" kind="operator"/>
-        <TapButton @push-button="pushButton" value="1"/>
-        <TapButton @push-button="pushButton" value="2"/>
-        <TapButton @push-button="pushButton" value="3"/>
-        <TapButton @push-button="pushButton" value="+" kind="operator"/>
-        <TapButton class="zero" @push-button="pushButton" value="0"/>
-        <TapButton @push-button="pushButton" value="."/>
-        <TapButton @push-button="pushButton" value="=" kind="operator"/>
+        <TapButton @push-button="clear" value="AC" kind="other"/>
+        <TapButton @push-button="changeSign" value="+/-" kind="other"/>
+        <TapButton @push-button="percent" value="%" kind="other"/>
+        <TapButton @push-button="operatorAdd" value="÷" kind="operator"/>
+        <TapButton @push-button="numericAdd" value="7"/>
+        <TapButton @push-button="numericAdd" value="8"/>
+        <TapButton @push-button="numericAdd" value="9"/>
+        <TapButton @push-button="operatorAdd" value="×" kind="operator"/>
+        <TapButton @push-button="numericAdd" value="4"/>
+        <TapButton @push-button="numericAdd" value="5"/>
+        <TapButton @push-button="numericAdd" value="6"/>
+        <TapButton @push-button="operatorAdd" value="-" kind="operator"/>
+        <TapButton @push-button="numericAdd" value="1"/>
+        <TapButton @push-button="numericAdd" value="2"/>
+        <TapButton @push-button="numericAdd" value="3"/>
+        <TapButton @push-button="operatorAdd" value="+" kind="operator"/>
+        <TapButton class="zero" @push-button="numericAdd" value="0"/>
+        <TapButton @push-button="addDot" value="."/>
+        <TapButton @push-button="equal" value="=" kind="operator"/>
       </div>
     </div>
   </div>
@@ -40,12 +40,74 @@ export default {
   },
   data () {
     return {
-      result: 0,
+      current: "0",
+      previous: null,
+      operator: null,
+      scale: 1.0
+    }
+  },
+  computed: {
+    display () {
+      return Number(this.current).toString()
+    },
+    fontScale () {
+      return { transform: `scale(${this.scale}, ${this.scale})` }
+    }
+  },
+  watch: {
+    display: function () {
+      this.$nextTick(function () {
+        const boxWrapper = this.$refs.boxWrapper.offsetWidth
+        const autoScaleText = this.$refs.autoScaleText.offsetWidth
+        const scale = boxWrapper / autoScaleText
+        if (scale < 1.) {
+          this.scale = scale
+        } else {
+          this.scale = 1.0
+        }
+      })
     }
   },
   methods: {
-    pushButton: function ({ kind, value }) {
-      console.log(kind, value);
+    numericAdd ({ value }) {
+      if (this.operator !== null && this.previous === null) {
+        this.previous = this.display
+        this.current = ""
+      }
+      this.current += value
+    },
+    operatorAdd ({ value }) {
+      if (value === "+") {
+        this.operator = (a, b) => a + b
+      } else if (value === "-") {
+        this.operator = (a, b) => a - b
+      } else if (value === "×") {
+        this.operator = (a, b) => a * b
+      } else if (value === "÷") {
+        this.operator = (a, b) => a / b
+      }
+    },
+    clear (_value) {
+      this.current = "0"
+      this.operator = null
+      this.previous = null
+    },
+    percent (_value) {
+      this.current = Number(this.current) / 100.0
+    },
+    equal (_value) {
+      if (this.operator !== null) {
+        this.current = this.operator(
+          Number(this.previous), Number(this.current))
+        this.operator = null
+        this.previous = 0
+      }
+    },
+    changeSign (_value) {
+      this.current = -1 * this.current
+    },
+    addDot (_value) {
+      this.current += "."
     }
   }
 }
@@ -75,14 +137,14 @@ div.calculator {
   margin: 0 auto;
 }
 
-.result {
+.display {
   height: 20%;
   position: relative;
 }
 
-.result p {
+.display p {
   color: white;
-  text-align: right;
+  text-align: left;
   font-size: calc(3vw + 30px);
   font-weight: bold;
   margin: 0;
@@ -90,6 +152,8 @@ div.calculator {
   bottom: 0;
   right: 0;
   padding-right: 0.5em;
+  padding-left: 0.5em;
+  transform-origin: right;
 }
 
 div.field {
@@ -110,8 +174,8 @@ div.field {
     font-size: 3em;
   }
 
-  .result p {
-    font-size: 3.5em;
+  .display p {
+    font-size: 4.5em;
   }
 
   div.calculator {
